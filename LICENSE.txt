@@ -1,0 +1,14 @@
+Kwicot Confidential Code License Agreement
+
+This project and its source code are the intellectual property of the author ("Kwicot") and are provided strictly for demonstration and evaluation purposes only.
+
+By accessing or reviewing this source code, you agree to the following terms:
+
+1. You may view and read the code solely for the purpose of evaluating the author's technical skills.
+2. You may not copy, modify, distribute, or use this code in any public or private projects.
+3. You may not share this code with third parties without written permission from the author.
+4. This code is provided "as is" with no warranty of any kind.
+
+If you do not agree to these terms, you are not permitted to access or review this code.
+
+© Kwicot, 2025. All rights reserved.

@@ -1,0 +1,8 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+backend/appsettings.DbSettings.json
+backend/appsettings.JwtSettings.json
+backend/appsettings.TelegramSettings.json
