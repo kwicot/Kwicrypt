@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Kwicrypt.Backend</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,6 +22,17 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.11.0" />
         <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kwicrypt.Module.Auth\Kwicrypt.Module.Auth.csproj" />
+      <ProjectReference Include="..\Kwicrypt.Module.Core\Kwicrypt.Module.Core.csproj" />
+      <ProjectReference Include="..\Kwicrypt.Module.Telegram\Kwicrypt.Module.Telegram.csproj" />
+      <ProjectReference Include="..\Kwicrypt.Module.Totp\Kwicrypt.Module.Totp.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Modules\" />
     </ItemGroup>
 
 </Project>

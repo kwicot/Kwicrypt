@@ -1,4 +1,4 @@
-namespace Backend.Modules.Telegram.Enums;
+namespace Kwicrypt.Module.Telegram.Enums;
 
 public enum NotificationType
 {

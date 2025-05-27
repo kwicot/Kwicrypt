@@ -1,10 +1,15 @@
-﻿using Backend.Modules.Telegram.Factorys;
-using Backend.Modules.Telegram.Interfaces;
-using Backend.Modules.Telegram.Models;
-using Backend.Modules.Telegram.Repositorys;
-using Backend.Modules.Telegram.Services;
+﻿using Kwicrypt.Module.Core;
+using Kwicrypt.Module.Telegram.Constants;
+using Kwicrypt.Module.Telegram.Factorys;
+using Kwicrypt.Module.Telegram.Interfaces;
+using Kwicrypt.Module.Telegram.Models;
+using Kwicrypt.Module.Telegram.Persistent;
+using Kwicrypt.Module.Telegram.Repositorys;
+using Kwicrypt.Module.Telegram.Services;
+using Kwicrypt.Module.Telegram.Services.Background;
+using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Modules.Telegram;
+namespace Kwicrypt.Module.Telegram;
 
 public class TelegramModuleInstaller : IModuleInstaller
 {
@@ -32,6 +37,20 @@ public class TelegramModuleInstaller : IModuleInstaller
     {
         builder.Configuration
             .AddJsonFile("appsettings.TelegramSettings.json", optional: false, reloadOnChange: false);
+        
+
+        //DB contexts
+        builder.Services.AddDbContext<TelegramUserDbContext>(options =>
+        {
+            var optionsFromMethod = TelegramUserDbContext.CreateOptions(Paths.DB_CONTEXT_USERS);
+            options.UseSqlite(optionsFromMethod.Extensions.OfType<Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal.SqliteOptionsExtension>().First().ConnectionString);
+        });
+        
+        builder.Services.AddDbContext<TelegramLinkTokenDbContext>(options =>
+        {
+            var optionsFromMethod = TelegramLinkTokenDbContext.CreateOptions(Paths.DB_CONTEXT_LINKS);
+            options.UseSqlite(optionsFromMethod.Extensions.OfType<Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal.SqliteOptionsExtension>().First().ConnectionString);
+        });
         
         builder.Services.Configure<TelegramSettings>(builder.Configuration.GetSection("TelegramSettings"));
     }

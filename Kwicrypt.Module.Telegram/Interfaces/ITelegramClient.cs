@@ -1,6 +1,6 @@
-using Backend.Modules.Telegram.Enums;
+using Kwicrypt.Module.Telegram.Enums;
 
-namespace Backend.Modules.Telegram.Interfaces;
+namespace Kwicrypt.Module.Telegram.Interfaces;
 
 public interface ITelegramClient
 {

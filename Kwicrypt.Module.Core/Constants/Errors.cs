@@ -1,4 +1,4 @@
-﻿namespace Backend.Constants;
+﻿namespace Kwicrypt.Module.Core.Constants;
 
 public static class Errors
 {

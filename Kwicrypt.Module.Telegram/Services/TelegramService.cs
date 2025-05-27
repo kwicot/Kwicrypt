@@ -1,8 +1,8 @@
-using Backend.Modules.Telegram.Interfaces;
-using Backend.Modules.Telegram.Models;
+using Kwicrypt.Module.Telegram.Interfaces;
+using Kwicrypt.Module.Telegram.Models;
 using Microsoft.Extensions.Options;
 
-namespace Backend.Modules.Telegram.Services;
+namespace Kwicrypt.Module.Telegram.Services;
 
 public class TelegramService : ITelegramService
 {

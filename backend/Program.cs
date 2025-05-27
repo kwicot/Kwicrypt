@@ -1,14 +1,10 @@
 using System.Text;
-using Backend.DBContext.Persistence;
-using Backend.Modules;
-using Backend.Modules.Auth;
-using Backend.Modules.Data;
-using Backend.Modules.DBContext;
-using Backend.Modules.Warden;
-using Microsoft.EntityFrameworkCore;
+using Kwicrypt.Module.Auth;
+using Kwicrypt.Module.Core;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Backend;
+namespace Kwicrypt.Backend;
 
 public class Program
 {
@@ -33,16 +29,21 @@ public class Program
 
         //TODO добавить защиту
         services.AddDataProtection();
-
-        ModuleInstaller.InstallModule<UsersModuleInstaller>(builder);
-        ModuleInstaller.InstallModule<AuthModuleInstaller>(builder);
-        ModuleInstaller.InstallModule<WardenModuleInstaller>(builder);
-        ModuleInstaller.InstallModule<DBContextModuleInstaller>(builder);
-
         
-        //ModuleInstaller.InstallModule<TelegramModuleInstaller>(builder);
+        var partManager = new ApplicationPartManager();
+        partManager.ApplicationParts.Clear();
 
-        services.AddControllers();
+        ModuleInstaller.InstallModule<AuthModuleInstaller>(builder, partManager);
+        //ModuleInstaller.InstallModule<WardenModuleInstaller>(builder);
+        //ModuleInstaller.InstallModule<TelegramModuleInstaller>(builder);
+        
+        builder.Services.AddControllers()
+            .ConfigureApplicationPartManager(apm =>
+            {
+                apm.ApplicationParts.Clear();
+                foreach (var part in partManager.ApplicationParts)
+                    apm.ApplicationParts.Add(part);
+            });
 
         builder.Services.AddAuthentication(options =>
             {

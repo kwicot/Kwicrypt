@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace TelegramBotService;
+namespace Kwicrypt.Module.Telegram.DTOs;
 
 [Serializable]
 public class TelegramUserDTO

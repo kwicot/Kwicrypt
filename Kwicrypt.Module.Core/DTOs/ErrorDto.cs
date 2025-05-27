@@ -1,4 +1,4 @@
-namespace Backend.DTOs;
+namespace Kwicrypt.Module.Core.DTOs;
 
 [Serializable]
 public class ErrorDto

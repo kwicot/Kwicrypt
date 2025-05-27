@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.Telegram", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.Totp", "Kwicrypt.Module.Totp\Kwicrypt.Module.Totp.csproj", "{0F5EA64A-8AD5-470D-9830-FD6FD5504970}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.LoginSecrets", "Kwicrypt.Module.LoginSecrets\Kwicrypt.Module.LoginSecrets.csproj", "{E1F5E4FB-6106-40E6-8677-6FEA7BA0A823}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{0F5EA64A-8AD5-470D-9830-FD6FD5504970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5EA64A-8AD5-470D-9830-FD6FD5504970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5EA64A-8AD5-470D-9830-FD6FD5504970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F5E4FB-6106-40E6-8677-6FEA7BA0A823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F5E4FB-6106-40E6-8677-6FEA7BA0A823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F5E4FB-6106-40E6-8677-6FEA7BA0A823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F5E4FB-6106-40E6-8677-6FEA7BA0A823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

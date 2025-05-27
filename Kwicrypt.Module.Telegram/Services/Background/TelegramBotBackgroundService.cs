@@ -1,11 +1,11 @@
-using Backend.Modules.Telegram.Interfaces;
-using Backend.Modules.Telegram.Models;
+using Kwicrypt.Module.Telegram.Interfaces;
+using Kwicrypt.Module.Telegram.Models;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace Backend.Modules.Telegram.Services;
+namespace Kwicrypt.Module.Telegram.Services.Background;
 
 public class TelegramBotBackgroundService : BackgroundService
 {

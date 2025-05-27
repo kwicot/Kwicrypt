@@ -1,4 +1,4 @@
-namespace Backend.Modules.Telegram.Models;
+namespace Kwicrypt.Module.Telegram.Models;
 
 public class TelegramSettings
 {

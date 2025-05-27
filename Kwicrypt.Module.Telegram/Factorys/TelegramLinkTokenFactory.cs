@@ -1,7 +1,7 @@
-using Backend.Modules.Telegram.Interfaces;
-using Backend.Modules.Telegram.Models;
+using Kwicrypt.Module.Telegram.Interfaces;
+using Kwicrypt.Module.Telegram.Models;
 
-namespace Backend.Modules.Telegram.Factorys;
+namespace Kwicrypt.Module.Telegram.Factorys;
 
 public class TelegramLinkTokenFactory : ITelegramLinkTokenFactory
 {

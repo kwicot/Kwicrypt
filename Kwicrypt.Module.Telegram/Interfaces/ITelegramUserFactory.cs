@@ -1,7 +1,6 @@
-using Backend.Modules.Telegram.Models;
-using TelegramBotService;
+using Kwicrypt.Module.Telegram.Models;
 
-namespace Backend.Modules.Telegram.Interfaces;
+namespace Kwicrypt.Module.Telegram.Interfaces;
 
 public interface ITelegramUserFactory
 {

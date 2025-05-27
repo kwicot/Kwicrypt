@@ -1,20 +1,18 @@
-using System.ComponentModel.DataAnnotations;
+using Kwicrypt.Module.Core;
 
-namespace Backend.Modules.Telegram.Models;
+namespace Kwicrypt.Module.Telegram.Models;
 
 [Serializable]
-public class TelegramUser
+public class TelegramUser : DbModelBase
 {
-    [Key] public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public long ChatId { get; private set; }
     public string UserName { get; private set; }
 
     public TelegramUser(){}
 
-    public TelegramUser(Guid id, Guid userId, long chatId, string userName)
+    public TelegramUser(Guid id, Guid userId, long chatId, string userName) : base(id)
     {
-        Id = id;
         UserId = userId;
         ChatId = chatId;
         UserName = userName;

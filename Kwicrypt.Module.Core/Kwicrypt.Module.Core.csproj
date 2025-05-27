@@ -5,7 +5,11 @@
         <OutputType>Library</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Kwicrypt</RootNamespace>
+        <RootNamespace>Kwicrypt.Module.Core</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.16" />
+    </ItemGroup>
 
 </Project>

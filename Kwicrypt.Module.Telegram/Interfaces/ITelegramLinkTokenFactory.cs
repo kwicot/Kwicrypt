@@ -1,6 +1,6 @@
-using Backend.Modules.Telegram.Models;
+using Kwicrypt.Module.Telegram.Models;
 
-namespace Backend.Modules.Telegram.Interfaces;
+namespace Kwicrypt.Module.Telegram.Interfaces;
 
 public interface ITelegramLinkTokenFactory
 {

@@ -1,6 +1,6 @@
 ﻿using OtpNet;
 
-namespace Backend.Modules.TwoFactor;
+namespace Kwicrypt.Module.Totp;
 
 public static class TwoFactorHelper
 {
@@ -9,7 +9,7 @@ public static class TwoFactorHelper
         try
         {
             byte[] secretBytes = Base32Encoding.ToBytes(base32Secret);
-            var totp = new Totp(secretBytes);
+            var totp = new OtpNet.Totp(secretBytes);
             
             return totp.VerifyTotp(userProvidedCode, out long _, new VerificationWindow(1, 1));
         }
@@ -25,7 +25,7 @@ public static class TwoFactorHelper
         {
             byte[] secretBytes = Base32Encoding.ToBytes(base32Secret);
             
-            var totp = new Totp(secretBytes);
+            var totp = new OtpNet.Totp(secretBytes);
 
             return totp.ComputeTotp();
         }

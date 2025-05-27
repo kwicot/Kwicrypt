@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
-using Backend.Constants;
-using Backend.Modules.Auth.Services;
-using Backend.Modules.Telegram.Interfaces;
+using Kwicrypt.Module.Auth.Services;
+using Kwicrypt.Module.Core.Constants;
+using Kwicrypt.Module.Telegram.DTOs;
+using Kwicrypt.Module.Telegram.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TelegramBotService;
 
-namespace Backend.Modules.Telegram.Controllers;
+namespace Kwicrypt.Module.Telegram.Controllers;
 
 [Route("api/telegram")]
 [ApiController]
