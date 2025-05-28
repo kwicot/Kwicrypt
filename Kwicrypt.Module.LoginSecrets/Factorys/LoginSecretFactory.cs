@@ -28,7 +28,7 @@ public class LoginSecretFactory : ILoginSecretFactory
         var loginData = new LoginSecret(id, userId, name, login, passwordHash);
         loginData.ChangeDirectory(directory);
         loginData.ChangeSiteName(siteName);
-        loginData.ChangeTwoFactorCode(twoFactorCode);
+        loginData.ChangeTotpSecret(twoFactorCode);
 
         return loginData;
     }

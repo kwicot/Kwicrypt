@@ -1,6 +1,8 @@
 using System.Text;
 using Kwicrypt.Module.Auth;
 using Kwicrypt.Module.Core;
+using Kwicrypt.Module.LoginSecrets;
+using Kwicrypt.Module.LoginSecrets.Persistent;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,7 +36,9 @@ public class Program
         partManager.ApplicationParts.Clear();
 
         ModuleInstaller.InstallModule<AuthModuleInstaller>(builder, partManager);
-        //ModuleInstaller.InstallModule<WardenModuleInstaller>(builder);
+        ModuleInstaller.InstallModule<LoginSecretsModuleInstaller>(builder, partManager);
+        
+        
         //ModuleInstaller.InstallModule<TelegramModuleInstaller>(builder);
         
         builder.Services.AddControllers()

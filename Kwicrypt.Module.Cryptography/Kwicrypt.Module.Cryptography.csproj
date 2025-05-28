@@ -1,11 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <OutputType>Library</OutputType>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Kwicrypt.Module.Totp</RootNamespace>
+        <RootNamespace>Kwicrypt.Module.Cryptography</RootNamespace>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,10 @@
 
     <ItemGroup>
       <PackageReference Include="Otp.NET" Version="1.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Factorys\" />
     </ItemGroup>
 
 </Project>

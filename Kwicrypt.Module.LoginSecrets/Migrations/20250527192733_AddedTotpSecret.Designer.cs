@@ -3,6 +3,7 @@ using System;
 using Kwicrypt.Module.LoginSecrets.Persistent;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kwicrypt.Module.LoginSecrets.Migrations
 {
     [DbContext(typeof(LoginSecretDbContext))]
-    partial class LoginSecretDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527192733_AddedTotpSecret")]
+    partial class AddedTotpSecret
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");

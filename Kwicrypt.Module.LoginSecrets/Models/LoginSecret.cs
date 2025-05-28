@@ -13,7 +13,7 @@ public class LoginSecret : DbModelBase
     
     public string Login { get; private set; }
     public string PasswordHash { get; private set; }
-    public string TwoFactorSecret { get; private set; }
+    public string TotpSecret { get; private set; }
     
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
@@ -30,7 +30,7 @@ public class LoginSecret : DbModelBase
         
         Login = login;
         PasswordHash = passwordHash;
-        TwoFactorSecret = string.Empty;
+        TotpSecret = string.Empty;
         
         CreatedAt = DateTime.Now;
         OnUpdate();
@@ -38,36 +38,54 @@ public class LoginSecret : DbModelBase
 
     public void ChangeDirectory(string directory)
     {
+        if(Directory == directory)
+            return;
+        
         Directory = directory;
         OnUpdate();
     }
 
-    public void ChangeTwoFactorCode(string code)
+    public void ChangeTotpSecret(string code)
     {
-        TwoFactorSecret = code;
+        if(TotpSecret == code)
+            return;
+        
+        TotpSecret = code;
         OnUpdate();
     }
 
     public void ChangeSiteName(string siteName)
     {
+        if(SiteName == siteName)
+            return;
+        
         SiteName = siteName;
         OnUpdate();
     }
 
     public void ChangeName(string name)
     {
+        if(Name == name)
+            return;
+        
         Name = name;
         OnUpdate();
     }
 
     public void ChangePassword(string passwordHash)
     {
+        if (PasswordHash == passwordHash)
+            return;
+        
         PasswordHash = passwordHash;
         OnUpdate();
     }
 
     public void ChangeLogin(string login)
     {
+        if(Login == login)
+            return;
+        
         Login = login;
         OnUpdate();
     }

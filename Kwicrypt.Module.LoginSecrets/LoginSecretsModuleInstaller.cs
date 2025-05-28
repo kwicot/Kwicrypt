@@ -4,18 +4,21 @@ using Kwicrypt.Module.LoginSecrets.Factorys;
 using Kwicrypt.Module.LoginSecrets.Interfaces;
 using Kwicrypt.Module.LoginSecrets.Persistent;
 using Kwicrypt.Module.LoginSecrets.Repositorys;
+using Kwicrypt.Module.LoginSecrets.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kwicrypt.Module.LoginSecrets;
 
-public class WardenModuleInstaller : IModuleInstaller
+public class LoginSecretsModuleInstaller : IModuleInstaller
 {
     public void Install(WebApplicationBuilder builder)
     {
         var services = builder.Services;
 
         services.AddScoped<ILoginSecretFactory, LoginSecretFactory>();
-        services.AddScoped<ILoginDataRepository, LoginDataRepository>();
+        services.AddScoped<ILoginSecretRepository, LoginSecretRepository>();
+
+        services.AddScoped<ILoginSecretsService, LoginSecretsService>();
     }
 
     public void Configure(WebApplicationBuilder builder)

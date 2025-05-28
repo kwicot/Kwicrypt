@@ -27,8 +27,9 @@
     <ItemGroup>
       <ProjectReference Include="..\Kwicrypt.Module.Auth\Kwicrypt.Module.Auth.csproj" />
       <ProjectReference Include="..\Kwicrypt.Module.Core\Kwicrypt.Module.Core.csproj" />
+      <ProjectReference Include="..\Kwicrypt.Module.LoginSecrets\Kwicrypt.Module.LoginSecrets.csproj" />
       <ProjectReference Include="..\Kwicrypt.Module.Telegram\Kwicrypt.Module.Telegram.csproj" />
-      <ProjectReference Include="..\Kwicrypt.Module.Totp\Kwicrypt.Module.Totp.csproj" />
+      <ProjectReference Include="..\Kwicrypt.Module.Cryptography\Kwicrypt.Module.Cryptography.csproj" />
     </ItemGroup>
 
     <ItemGroup>

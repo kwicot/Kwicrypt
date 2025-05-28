@@ -11,5 +11,5 @@ public interface ILoginSecretFactory
         string passwordHash,
         string directory,
         string siteName,
-        string twoFactorCode);
+        string totpSecret);
 }

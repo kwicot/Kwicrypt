@@ -1,26 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Kwicrypt.Module.Auth.Dtos;
+using Kwicrypt.Module.Auth.Interfaces;
 using Kwicrypt.Module.Auth.Services;
 using Kwicrypt.Module.Core.Constants;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kwicrypt.Module.Auth.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController : BaseController
 {
-    private readonly UserAuthService _userAuthService;
-
     public AuthController(
-        UserAuthService userAuthService)
-    {
-        _userAuthService = userAuthService;
-    }
-    
+        UserAuthService userAuthService,
+        IUserRepository userRepository) : base(userAuthService, userRepository) {}
+
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody][Required] UserRegisterRequestDto userRegisterRequestDto)
     {
+        
+        var decryptedData = _cryptoService.DecryptRsa(registerData);
+        
+        
         if(!_userAuthService.ValidateRegisterCredentials(userRegisterRequestDto, out var errorCode))
             return BadRequest(errorCode);
 
@@ -83,7 +86,7 @@ public class AuthController : ControllerBase
             return BadRequest(result.ErrorCode);
     }
     
-    [HttpPost("revokeRefreshTokens")]
+    [HttpPost("revoke-refresh-tokens")]
     public async Task<IActionResult> ClearRefreshTokens([FromBody][Required] string refreshToken)
     {
         var result = await _userAuthService.RevokeUserTokensAsync(refreshToken);
@@ -91,5 +94,14 @@ public class AuthController : ControllerBase
             return Ok();
 
         return BadRequest(Errors.REFRESH_TOKEN_EXPIRED);
+    }
+
+    [HttpGet("me")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var authenticatedUser = await GetAuthenticatedUser();
+        if (authenticatedUser.ErrorResult != null) return authenticatedUser.ErrorResult;
+
+        return Ok(authenticatedUser.User);
     }
 }
