@@ -1,17 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <OutputType>Library</OutputType>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Kwicrypt.Module.Cryptography</RootNamespace>
-        <LangVersion>12</LangVersion>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="../Kwicrypt.Module.Core/Kwicrypt.Module.Core.csproj" />
-    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

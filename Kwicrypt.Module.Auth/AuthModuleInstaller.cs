@@ -35,7 +35,7 @@ public class AuthModuleInstaller : IModuleInstaller
         services.AddScoped<UserAuthService>();
         
 #if MODULE_CRYPTO
-        services.AddTransient<ICryptoService, CryptoService>();
+        services.AddSingleton<ICryptoService, CryptoService>();
 #endif
         
         services.AddHostedService<ExpiredRefreshTokenCleanupBackgroundService>();

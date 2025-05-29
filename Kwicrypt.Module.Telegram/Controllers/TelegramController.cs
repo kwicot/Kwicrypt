@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Kwicrypt.Module.Auth.Services;
 using Kwicrypt.Module.Core.Constants;
-using Kwicrypt.Module.Telegram.DTOs;
+using Kwicrypt.Module.Dto;
 using Kwicrypt.Module.Telegram.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

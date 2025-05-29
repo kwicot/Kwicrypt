@@ -1,4 +1,5 @@
 ﻿
+using System.Security.Cryptography;
 using Kwicrypt.Module.Core;
 
 namespace Kwicrypt.Module.Auth.Models;
@@ -14,7 +15,7 @@ public class User : DbModelBase
     public bool MailVerified { get; private set; }
     
     
-    public bool UseEncryption => !string.IsNullOrEmpty(PublicRsaKey);
+    public bool UseEncryption => !string.IsNullOrEmpty(PublicRsaKey.ToString());
     
     public User(){}
     

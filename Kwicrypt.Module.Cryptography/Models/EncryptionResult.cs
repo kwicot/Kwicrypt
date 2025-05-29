@@ -1,45 +1,47 @@
-﻿using Kwicrypt.Module.Core.Constants;
+﻿using System;
+using Kwicrypt.Module.Cryptography.Constants;
 
-namespace Kwicrypt.Module.Cryptography.Models;
-
-public class EncryptionResult
+namespace Kwicrypt.Module.Cryptography.Models
 {
-    public bool Success { get; private set; }
-    public byte[] Result { get; private set; }
-    public string Error { get; private set; }
-
-    public EncryptionResult(byte[] result)
+    public class EncryptionResult
     {
-        Success = true;
-        Result = result;
-        Error = Errors.NONE;
+        public bool Success { get; private set; }
+        public EncryptedData Result { get; private set; }
+        public string Error { get; private set; }
+
+        public EncryptionResult(EncryptedData result)
+        {
+            Success = true;
+            Result = result;
+            Error = Errors.NONE;
+        }
+
+        public EncryptionResult(string error)
+        {
+            Success = false;
+            Result = default;
+            Error = error;
+        }
     }
 
-    public EncryptionResult(string error)
+    public class EncryptionResult<T>
     {
-        Success = false;
-        Result = Array.Empty<byte>();
-        Error = error;
-    }
-}
+        public bool Success { get; private set; }
+        public T Result { get; private set; }
+        public string Error { get; private set; }
 
-public class EncryptionResult<T>
-{
-    public bool Success { get; private set; }
-    public T Result { get; private set; }
-    public string Error { get; private set; }
+        public EncryptionResult(T result)
+        {
+            Success = true;
+            Result = result;
+            Error = Errors.NONE;
+        }
 
-    public EncryptionResult(T result)
-    {
-        Success = true;
-        Result = result;
-        Error = Errors.NONE;
-    }
-
-    public EncryptionResult(string error)
-    {
-        Success = false;
-        Result = default(T);
-        Error = error;
+        public EncryptionResult(string error)
+        {
+            Success = false;
+            Result = default(T);
+            Error = error;
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Kwicrypt.Module.Auth.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
 
-            modelBuilder.Entity("Kwicrypt.Module.Auth.Models.User", b =>
+            modelBuilder.Entity("Kwicrypt.Module.Dto.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

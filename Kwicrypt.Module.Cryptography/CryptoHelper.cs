@@ -1,79 +1,79 @@
-﻿using System.Security.Cryptography;
-using OtpNet;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using Kwicrypt.Module.Cryptography.Models;
+using Newtonsoft.Json;
 
-namespace Kwicrypt.Module.Cryptography;
-
-
-public static class CryptoHelper
+namespace Kwicrypt.Module.Cryptography
 {
-    public static bool IsValidTotpSecret(string base32Secret, string userProvidedCode)
+    public class CryptoHelper
     {
-        try
+       public static EncryptedData EncryptObject<T>(T obj, string rsaPublicKeyXml)
         {
-            byte[] secretBytes = Base32Encoding.ToBytes(base32Secret);
-            var totp = new OtpNet.Totp(secretBytes);
-            
-            return totp.VerifyTotp(userProvidedCode, out long _, new VerificationWindow(1, 1));
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    public static string GenerateTotpCode(string base32Secret)
-    {
-        Console.WriteLine($"Try generate totp code from {base32Secret}");
-        if(string.IsNullOrEmpty(base32Secret))
-            return string.Empty;
-        
-        try
-        {
-            byte[] secretBytes = Base32Encoding.ToBytes(base32Secret);
-            
-            var totp = new OtpNet.Totp(secretBytes);
+            string jsonData = JsonConvert.SerializeObject(obj);
 
-            return totp.ComputeTotp();
+            using (var aes = Aes.Create())
+            {
+                aes.GenerateKey();
+                aes.GenerateIV();
+
+                byte[] encryptedData;
+                using (var encryptor = aes.CreateEncryptor())
+                {
+                    byte[] plainBytes = Encoding.UTF8.GetBytes(jsonData);
+                    encryptedData = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+                }
+
+                byte[] aesKeyIv = aes.Key.Concat(aes.IV).ToArray();
+                byte[] encryptedAesKey;
+
+                using (var rsa = new RSACryptoServiceProvider())
+                {
+                    rsa.FromXmlString(rsaPublicKeyXml);
+                    encryptedAesKey = rsa.Encrypt(aesKeyIv, false);
+                }
+
+                var finalPackage = new EncryptedData()
+                {
+                    Key = Convert.ToBase64String(encryptedAesKey),
+                    Data = Convert.ToBase64String(encryptedData)
+                };
+
+                return finalPackage;
+            }
         }
-        catch (Exception ex)
+        
+        public static T DecryptObject<T>(EncryptedData encryptedString, string rsaPrivateKeyXml)
         {
-            Console.WriteLine($"Ошибка при генерации кода: {ex.Message}");
-            return string.Empty;
+            byte[] encryptedKey = Convert.FromBase64String(encryptedString.Key);
+            byte[] encryptedData = Convert.FromBase64String(encryptedString.Data);
+
+            byte[] aesKeyIv;
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                rsa.FromXmlString(rsaPrivateKeyXml);
+                aesKeyIv = rsa.Decrypt(encryptedKey, false);
+            }
+
+            byte[] key = aesKeyIv.Take(32).ToArray(); // AES-256
+            byte[] iv = aesKeyIv.Skip(32).ToArray();
+
+            string json;
+            using (var aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = iv;
+
+                using (var decryptor = aes.CreateDecryptor())
+                {
+                    byte[] decryptedBytes = decryptor.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
+                    json = Encoding.UTF8.GetString(decryptedBytes);
+                }
+            }
+
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
-    public static Aes CreateAes(string base32Secret)
-    {
-        using var aes = Aes.Create();
-        aes.GenerateKey();
-        aes.GenerateIV();
-        return aes;
-    }
-    public static byte[] AesEncrypt(byte[] data, Aes aes)
-    {
-        using var encryptor = aes.CreateEncryptor();
-        return encryptor.TransformFinalBlock(data, 0, data.Length);
-    }
-    public static byte[] AesDecrypt(byte[] encryptedData, Aes aes)
-    {
-        using var decryptor = aes.CreateDecryptor();
-        return decryptor.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
-    }
-    public static (string privateKey, string publicKey) CreateRsa(int keySize = 2048)
-    {
-        using var rsa = RSA.Create(keySize);
-        var publicKey = rsa.ToXmlString(false);
-        var privateKey = rsa.ToXmlString(true);
-        return (privateKey, publicKey);
-    }
-    public static byte[] EncryptRsa(byte[] data, string publicRsaKey)
-    {
-        using var rsa = RSA.Create();
-        rsa.FromXmlString(publicRsaKey);
-        return rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA256);
-    }
-    public static byte[] DecryptRsa(byte[] encryptedData, string privateRsaKey)
-    {
-        using var rsa = RSA.Create();
-        rsa.FromXmlString(privateRsaKey);
-        return rsa.Decrypt(encryptedData, RSAEncryptionPadding.OaepSHA256);
-    }
+
 }

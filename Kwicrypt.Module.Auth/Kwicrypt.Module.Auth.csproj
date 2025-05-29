@@ -18,6 +18,7 @@
     
     
     <ItemGroup>
+        <ProjectReference Include="..\Kwicrypt.Module.Dto\Kwicrypt.Module.Dto.csproj" />
         <ProjectReference Include="../Kwicrypt.Module.Core/Kwicrypt.Module.Core.csproj"/>
     </ItemGroup>
     

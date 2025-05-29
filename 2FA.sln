@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.LoginSecret
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.Serialization", "Kwicrypt.Module.Serialization\Kwicrypt.Module.Serialization.csproj", "{717DD3A1-8525-482B-9156-3E211E0DC007}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwicrypt.Module.Dto", "Kwicrypt.Module.Dto\Kwicrypt.Module.Dto.csproj", "{21335F51-6C6D-4521-B2A2-AC8A246B2AE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{717DD3A1-8525-482B-9156-3E211E0DC007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{717DD3A1-8525-482B-9156-3E211E0DC007}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{717DD3A1-8525-482B-9156-3E211E0DC007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21335F51-6C6D-4521-B2A2-AC8A246B2AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21335F51-6C6D-4521-B2A2-AC8A246B2AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21335F51-6C6D-4521-B2A2-AC8A246B2AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21335F51-6C6D-4521-B2A2-AC8A246B2AE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

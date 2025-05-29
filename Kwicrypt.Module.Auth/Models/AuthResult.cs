@@ -1,5 +1,5 @@
 using Kwicrypt.Module.Core.Constants;
-using Kwicrypt.Module.Core.DTOs;
+using Kwicrypt.Module.Dto;
 
 namespace Kwicrypt.Module.Auth.Models;
 

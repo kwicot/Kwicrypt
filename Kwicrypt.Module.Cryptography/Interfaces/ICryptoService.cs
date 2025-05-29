@@ -1,15 +1,15 @@
-﻿using System.Net;
+﻿using System.Security.Cryptography;
 using Kwicrypt.Module.Cryptography.Models;
 
-namespace Kwicrypt.Module.Cryptography.Interfaces;
-
-public interface ICryptoService
+namespace Kwicrypt.Module.Cryptography.Interfaces
 {
-    public string GetPublicRsaKey();
-    
-    public EncryptionResult DecryptRsa(byte[] encryptedData);
-    public EncryptionResult<T> DecryptRsa<T>(byte[] encryptedData);
-    
-    public EncryptionResult EncryptRsa(byte[] data, string receiverPublicRsaKey);
-    
+
+    public interface ICryptoService
+    {
+        public string GetPublicRsaKey();
+
+        public EncryptionResult<T> DecryptRsa<T>(EncryptedData encryptedData);
+
+        public EncryptionResult EncryptRsa(object data, string receiverPublicRsaKey);
+    }
 }

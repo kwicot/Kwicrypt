@@ -2,7 +2,7 @@
 using Kwicrypt.Module.Auth.Controllers;
 using Kwicrypt.Module.Auth.Interfaces;
 using Kwicrypt.Module.Auth.Services;
-using Kwicrypt.Module.LoginSecrets.DTOs;
+using Kwicrypt.Module.Dto;
 using Kwicrypt.Module.LoginSecrets.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

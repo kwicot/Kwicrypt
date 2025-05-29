@@ -1,84 +1,63 @@
-﻿using System.Net;
+﻿using System;
 using System.Security.Cryptography;
-using System.Text;
-using Kwicrypt.Module.Core.Constants;
+using Kwicrypt.Module.Cryptography.Constants;
 using Kwicrypt.Module.Cryptography.Interfaces;
 using Kwicrypt.Module.Cryptography.Models;
-using Newtonsoft.Json;
 
-namespace Kwicrypt.Module.Cryptography.Services;
-
-public class CryptoService : ICryptoService
+namespace Kwicrypt.Module.Cryptography.Services
 {
-    private readonly string privateRsaKey;
-    private readonly string publicRsaKey;
-    
-    
-    public CryptoService()
+    public class CryptoService : ICryptoService
     {
-        var keys = CryptoHelper.CreateRsa();
+        private readonly string privateRsaKey;
+        private readonly string publicRsaKey;
+        private readonly RSA rsa;
+
+        public CryptoService()
+        {
+            rsa = RSA.Create();
+            rsa.KeySize = 2048;
+
+            publicRsaKey = rsa.ToXmlString(false);
+            privateRsaKey = rsa.ToXmlString(true);
+
+            Console.WriteLine("Private RSA Key: " + privateRsaKey);
+            Console.WriteLine($"Public RSA Key: {publicRsaKey}");
+        }
+
+        public string GetPublicRsaKey() => publicRsaKey;
         
-        privateRsaKey = keys.privateKey;
-        publicRsaKey = keys.publicKey;
-    }
+        
 
-    public string GetPublicRsaKey() =>
-        publicRsaKey;
-
-    public EncryptionResult DecryptRsa(byte[] encryptedData)
-    {
-        try
+        public EncryptionResult<T> DecryptRsa<T>(EncryptedData encryptedData)
         {
-            var decryptedData = CryptoHelper.DecryptRsa(encryptedData, privateRsaKey);
-            return new EncryptionResult(decryptedData);
-        }
-        catch (ArgumentNullException ex)
-        {
-            return new EncryptionResult(Errors.MISSING_DATA);
-        }
-        catch (CryptographicException ex)
-        {
-            return new EncryptionResult(Errors.INVALID_DATA);
-        }
-    }
-
-    public EncryptionResult<T> DecryptRsa<T>(byte[] encryptedData)
-    {
-        try
-        {
-            var encryptResult = DecryptRsa(encryptedData);
-            if (encryptResult.Success)
+            try
             {
-                var data = JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(encryptResult.Result));
-                if (data == null)
-                    return new EncryptionResult<T>(Errors.MISSING_DATA);
-                        
-                return new EncryptionResult<T>(data);
+                Console.WriteLine($"Decrypting data with {privateRsaKey}");
+                var encryptResult = CryptoHelper.DecryptObject<T>(encryptedData, privateRsaKey);
+                return new EncryptionResult<T>(encryptResult);
             }
-            
-            return new EncryptionResult<T>(encryptResult.Error);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
 
-    public EncryptionResult EncryptRsa(byte[] data, string receiverPublicRsaKey)
-    {
-        try
+        public EncryptionResult EncryptRsa(object data, string receiverPublicRsaKey)
         {
-            var encryptedData = CryptoHelper.EncryptRsa(data, receiverPublicRsaKey);
-            return new EncryptionResult(encryptedData);
-        }
-        catch (ArgumentNullException ex)
-        {
-            return new EncryptionResult(Errors.MISSING_DATA);
-        }
-        catch (CryptographicException ex)
-        {
-            return new EncryptionResult(Errors.INVALID_DATA);
+            try
+            {
+                var encryptedData = CryptoHelper.EncryptObject(data, receiverPublicRsaKey);
+                return new EncryptionResult(encryptedData);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return new EncryptionResult(Errors.MISSING_DATA);
+            }
+            catch (CryptographicException ex)
+            {
+                return new EncryptionResult(Errors.INVALID_DATA);
+            }
         }
     }
 }

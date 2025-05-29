@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kwicrypt.Module.Auth.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20250529124845_AddedCryptography")]
-    partial class AddedCryptography
+    [Migration("20250529152559_SimpleReworkCrypto")]
+    partial class SimpleReworkCrypto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace Kwicrypt.Module.Auth.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
 
-            modelBuilder.Entity("Kwicrypt.Module.Dto.User", b =>
+            modelBuilder.Entity("Kwicrypt.Module.Auth.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

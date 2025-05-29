@@ -1,8 +1,8 @@
-﻿using Kwicrypt.Module.Auth.Dtos;
-using Kwicrypt.Module.Auth.Helpers;
+﻿using Kwicrypt.Module.Auth.Helpers;
 using Kwicrypt.Module.Auth.Interfaces;
 using Kwicrypt.Module.Auth.Models;
 using Kwicrypt.Module.Core.Constants;
+using Kwicrypt.Module.Dto;
 
 namespace Kwicrypt.Module.Auth.Services;
 
@@ -25,7 +25,7 @@ public class UserAuthService
         _tokenService = tokenService;
     }
     
-    public async Task<AuthResult> RegisterAsync(UserRegisterDto dto)
+    public async Task<AuthResult> RegisterAsync(UserAuthDto dto)
     {
         var existingUser = await _userRepository.FindUserByMail(dto.Mail);
         
@@ -41,18 +41,18 @@ public class UserAuthService
         return new AuthResult(user);
     }
 
-    public async Task<AuthResult> LoginAsync(UserLoginDto userLoginDto)
+    public async Task<AuthResult> LoginAsync(UserAuthDto userAuthDto)
     {
-        var user = await _userRepository.FindUserByMail(userLoginDto.Mail);
+        var user = await _userRepository.FindUserByMail(userAuthDto.Mail);
         if (user == null)
         {
             return AuthResult.InvalidCredentialsResult;
         }
 
-        if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
+        if (!BCrypt.Net.BCrypt.Verify(userAuthDto.Password, user.PasswordHash))
             return AuthResult.InvalidCredentialsResult;
 
-        user.SetPublicRSAKey(userLoginDto.PublicRsaKey);
+        user.SetPublicRSAKey(userAuthDto.PublicRsaKey);
         await _userRepository.UpdateUser(user);
         
         var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
@@ -92,7 +92,7 @@ public class UserAuthService
         return new AuthResult(user, accessToken, newRefreshToken);
     }
 
-    public bool ValidateRegisterCredentials(UserRegisterDto dto, out string errorCode)
+    public bool ValidateRegisterCredentials(UserAuthDto dto, out string errorCode)
     {
         if (!MailValidator.Validate(dto.Mail, out errorCode))
             return false;
@@ -102,7 +102,7 @@ public class UserAuthService
 
         return true;
     }
-    public bool ValidateLoginCredentials(UserLoginDto dto, out string errorCode)
+    public bool ValidateLoginCredentials(UserAuthDto dto, out string errorCode)
     {
         if (!MailValidator.Validate(dto.Mail, out errorCode))
             return false;

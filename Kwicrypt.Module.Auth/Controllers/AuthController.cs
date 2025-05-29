@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Kwicrypt.Module.Auth.Dtos;
+using System.Text;
 using Kwicrypt.Module.Auth.Interfaces;
-using Kwicrypt.Module.Auth.Models;
 using Kwicrypt.Module.Auth.Services;
 using Kwicrypt.Module.Core.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Kwicrypt.Module.Cryptography.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Kwicrypt.Module.Cryptography.Models;
+using Kwicrypt.Module.Dto;
 
 namespace Kwicrypt.Module.Auth.Controllers;
 
@@ -25,9 +25,9 @@ public class AuthController : BaseController
 
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody][Required] byte[] userRegisterDtoJson)
+    public async Task<IActionResult> Register([FromBody][Required] EncryptedData userRegisterDtoBytes)
     {
-        var encryptionResult = _cryptoService.DecryptRsa<UserRegisterDto>(userRegisterDtoJson);
+        var encryptionResult = _cryptoService.DecryptRsa<UserAuthDto>(userRegisterDtoBytes);
         if (!encryptionResult.Success)
             return BadRequest(encryptionResult.Error);
 
@@ -47,9 +47,9 @@ public class AuthController : BaseController
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody][Required] byte[] userLoginDtoJson)
+    public async Task<IActionResult> Login([FromBody][Required] EncryptedData userLoginDtoJson)
     {
-        var encryptionResult = _cryptoService.DecryptRsa<UserLoginDto>(userLoginDtoJson);
+        var encryptionResult = _cryptoService.DecryptRsa<UserAuthDto>(userLoginDtoJson);
         if (!encryptionResult.Success)
             return BadRequest(encryptionResult.Error);
         
@@ -62,19 +62,24 @@ public class AuthController : BaseController
 
         if (result.Success)
         {
-            return Ok(new UserLoginResultDto()
+            var userLoginResultDto = new UserLoginResultDto()
             {
                 AccessToken = result.AccessToken,
                 RefreshToken = result.RefreshToken.Token,
-                PublicRsaKey = _cryptoService.GetPublicRsaKey()
-            });
+            };
+            
+            var raw = _cryptoService.EncryptRsa(userLoginResultDto, userLoginDto.PublicRsaKey);
+            if (!raw.Success)
+                return BadRequest(raw.Error);
+            
+            return Ok(raw.Result);
         }
 
         return BadRequest(result.ErrorCode);
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody][Required] byte[] refreshTokenJson)
+    public async Task<IActionResult> Logout([FromBody][Required] EncryptedData refreshTokenJson)
     {
         var encryptionResult = _cryptoService.DecryptRsa<string>(refreshTokenJson);
         if (!encryptionResult.Success)
@@ -91,7 +96,7 @@ public class AuthController : BaseController
 
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody][Required] byte[] refreshTokenJson)
+    public async Task<IActionResult> Refresh([FromBody][Required] EncryptedData refreshTokenJson)
     {
         var encryptionResult = _cryptoService.DecryptRsa<string>(refreshTokenJson);
         if (!encryptionResult.Success)
@@ -107,7 +112,6 @@ public class AuthController : BaseController
             {
                 AccessToken = result.AccessToken,
                 RefreshToken = result.RefreshToken.Token,
-                PublicRsaKey = _cryptoService.GetPublicRsaKey()
             });
         }
 

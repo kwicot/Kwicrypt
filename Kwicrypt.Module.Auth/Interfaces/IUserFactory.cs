@@ -1,4 +1,5 @@
-﻿using Kwicrypt.Module.Auth.Models;
+﻿using System.Security.Cryptography;
+using Kwicrypt.Module.Auth.Models;
 
 namespace Kwicrypt.Module.Auth.Interfaces;
 

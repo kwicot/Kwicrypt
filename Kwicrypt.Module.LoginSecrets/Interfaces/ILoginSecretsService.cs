@@ -1,5 +1,5 @@
 ﻿using Kwicrypt.Module.Auth.Models;
-using Kwicrypt.Module.LoginSecrets.DTOs;
+using Kwicrypt.Module.Dto;
 
 namespace Kwicrypt.Module.LoginSecrets.Interfaces;
 

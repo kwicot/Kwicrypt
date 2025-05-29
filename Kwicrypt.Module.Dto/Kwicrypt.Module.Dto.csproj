@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Kwicrypt.Module.Dto</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="Exists('../Kwicrypt.Module.Cryptography\Kwicrypt.Module.Cryptography.csproj')">
+        <DefineConstants>$(DefineConstants);MODULE_CRYPTO</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('../Kwicrypt.Module.Cryptography\Kwicrypt.Module.Cryptography.csproj')">
+        <ProjectReference Include="..\Kwicrypt.Module.Cryptography\Kwicrypt.Module.Cryptography.csproj" />
+    </ItemGroup>
+
+</Project>

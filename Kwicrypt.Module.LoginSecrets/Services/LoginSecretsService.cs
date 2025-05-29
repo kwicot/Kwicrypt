@@ -1,5 +1,5 @@
 ﻿using Kwicrypt.Module.Auth.Models;
-using Kwicrypt.Module.LoginSecrets.DTOs;
+using Kwicrypt.Module.Dto;
 using Kwicrypt.Module.LoginSecrets.Interfaces;
 
 namespace Kwicrypt.Module.LoginSecrets.Services;
@@ -35,8 +35,10 @@ public class LoginSecretsService : ILoginSecretsService
     public async Task<LoginSecretDto> GetSecretDto(Guid secretId)
     {
         var secret = await _loginSecretRepository.GetLoginDataByIdAsync(secretId);
-        var loginSecretDto = new LoginSecretDto(secret);
-        return loginSecretDto;
+        //TODO fix
+        //var loginSecretDto = new LoginSecretDto(secret);
+        //return loginSecretDto;
+        return null;
     }
 
     public async Task<List<LoginSecretDto>> GetSecretsDto(User user)
