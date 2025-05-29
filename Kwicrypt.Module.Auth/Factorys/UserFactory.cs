@@ -12,12 +12,12 @@ public class UserFactory : IUserFactory
         _userRepository = userRepository;
     }
     
-    public User GetUser(string username, string password)
+    public User GetUser(string mail, string password, string publicRsaKey)
     {
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
         var id = GetId();
-        return new User(id, username, passwordHash);
+        return new User(id, mail, passwordHash, publicRsaKey);
     }
 
     Guid GetId()

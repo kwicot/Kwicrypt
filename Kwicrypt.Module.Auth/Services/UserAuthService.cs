@@ -25,33 +25,36 @@ public class UserAuthService
         _tokenService = tokenService;
     }
     
-    public async Task<AuthResult> RegisterAsync(UserRegisterRequestDto requestDto)
+    public async Task<AuthResult> RegisterAsync(UserRegisterDto dto)
     {
-        var existingUser = await _userRepository.FindUser(requestDto.Username);
+        var existingUser = await _userRepository.FindUserByMail(dto.Mail);
         
         if (existingUser != null)
         {
-            return new AuthResult(Errors.USERNAME_EXISTS, "Username already exists");
+            return new AuthResult(Errors.MAIL_EXISTS, "Mail already registered");
         }
 
-        var user = _userFactory.GetUser(requestDto.Username, requestDto.Password);
+        var user = _userFactory.GetUser(dto.Mail, dto.Password, dto.PublicRsaKey);
 
         await _userRepository.AddUser(user);
 
         return new AuthResult(user);
     }
 
-    public async Task<AuthResult> LoginAsync(UserLoginRequestDto userLoginRequestDto)
+    public async Task<AuthResult> LoginAsync(UserLoginDto userLoginDto)
     {
-        var user = await _userRepository.FindUser(userLoginRequestDto.Username);
+        var user = await _userRepository.FindUserByMail(userLoginDto.Mail);
         if (user == null)
         {
             return AuthResult.InvalidCredentialsResult;
         }
 
-        if (!BCrypt.Net.BCrypt.Verify(userLoginRequestDto.Password, user.PasswordHash))
+        if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
             return AuthResult.InvalidCredentialsResult;
 
+        user.SetPublicRSAKey(userLoginDto.PublicRsaKey);
+        await _userRepository.UpdateUser(user);
+        
         var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
         var accessToken = _tokenService.GenerateAccessToken(user, refreshToken);
         
@@ -75,10 +78,10 @@ public class UserAuthService
             return new AuthResult(Errors.REFRESH_TOKEN_EXPIRED, "Refresh token expired or invalid");
         }
 
-        var user = await _userRepository.FindUser(refreshToken.UserId);
+        var user = await _userRepository.FindUserById(refreshToken.UserId);
         if (user == null)
         {
-            return new AuthResult(Errors.USERNAME_NOT_FOUND, "User with refresh token not found");
+            return new AuthResult(Errors.MAIL_NOT_FOUND, "User with refresh token not found");
         }
 
         await _refreshTokenRepository.RevokeAsync(refreshToken);
@@ -89,22 +92,22 @@ public class UserAuthService
         return new AuthResult(user, accessToken, newRefreshToken);
     }
 
-    public bool ValidateRegisterCredentials(UserRegisterRequestDto requestDto, out string errorCode)
+    public bool ValidateRegisterCredentials(UserRegisterDto dto, out string errorCode)
     {
-        if (!UsernameValidator.Validate(requestDto.Username, out errorCode))
+        if (!MailValidator.Validate(dto.Mail, out errorCode))
             return false;
 
-        if (!PasswordValidator.Validate(requestDto.Password, out errorCode))
+        if (!PasswordValidator.Validate(dto.Password, out errorCode))
             return false;
 
         return true;
     }
-    public bool ValidateLoginCredentials(UserLoginRequestDto requestDto, out string errorCode)
+    public bool ValidateLoginCredentials(UserLoginDto dto, out string errorCode)
     {
-        if (!UsernameValidator.Validate(requestDto.Username, out errorCode))
+        if (!MailValidator.Validate(dto.Mail, out errorCode))
             return false;
 
-        if (!PasswordValidator.Validate(requestDto.Password, out errorCode))
+        if (!PasswordValidator.Validate(dto.Password, out errorCode))
             return false;
 
         return true;
@@ -128,7 +131,7 @@ public class UserAuthService
         if (token == null)
             return false;
 
-        var user = await _userRepository.FindUser(token.UserId);
+        var user = await _userRepository.FindUserById(token.UserId);
         if (user == null)
             return false;
 

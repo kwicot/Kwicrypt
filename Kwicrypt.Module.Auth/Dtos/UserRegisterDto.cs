@@ -3,10 +3,14 @@
 namespace Kwicrypt.Module.Auth.Dtos;
 
 [Serializable]
-public class UserLoginRequestDto
+public class UserRegisterDto
 {
     [Required]
-    public string Username { get; set; }
+    public string Mail { get; set; }
     [Required]
     public string Password { get; set; }
+    
+    [Required]
+    public string PublicRsaKey { get; set; }
+
 }

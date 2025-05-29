@@ -15,10 +15,10 @@ public class UserRepository : IUserRepository
         _usersContext = usersContext;
     }
     
-    public async Task<User> FindUser(string userName) => 
-        await _usersContext.List.FirstOrDefaultAsync(u => u.Username == userName);
+    public async Task<User> FindUserByMail(string mail) => 
+        await _usersContext.List.FirstOrDefaultAsync(u => u.Mail == mail);
 
-    public async Task<User> FindUser(Guid guid) =>
+    public async Task<User> FindUserById(Guid guid) =>
         await _usersContext.List.FirstOrDefaultAsync(u => u.Id == guid);
 
     public async Task AddUser(User user)
@@ -27,9 +27,14 @@ public class UserRepository : IUserRepository
         await _usersContext.SaveChangesAsync();
     }
 
-    public bool HasUsername(string userName) =>
-        _usersContext.List.Any((user => user.Username == userName));
+    public bool HasMail(string mail) =>
+        _usersContext.List.Any((user => user.Mail == mail));
 
     public bool HasId(Guid id) =>
         _usersContext.List.Any((user => user.Id == id));
+
+    public async Task UpdateUser(User user)
+    {
+        await _usersContext.SaveChangesAsync();
+    }
 }

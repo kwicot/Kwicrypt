@@ -4,5 +4,5 @@ namespace Kwicrypt.Module.Auth.Interfaces;
 
 public interface IUserFactory
 {
-    User GetUser(string username, string password);
+    User GetUser(string mail, string password, string publicRsaKey);
 }

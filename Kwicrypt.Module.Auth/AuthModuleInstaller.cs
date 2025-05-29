@@ -1,6 +1,5 @@
 ﻿using Kwicrypt.Module.Auth.Factorys;
 using Kwicrypt.Module.Auth.Interfaces;
-using Kwicrypt.Module.Auth.ModelBinderProviders;
 using Kwicrypt.Module.Auth.Models;
 using Kwicrypt.Module.Auth.Persistent;
 using Kwicrypt.Module.Auth.Repositorys;
@@ -9,7 +8,6 @@ using Kwicrypt.Module.Auth.Services.Background;
 using Kwicrypt.Module.Core;
 
 #if MODULE_CRYPTO
-using Kwicrypt.Module.Auth.ModelBinders;
 using Kwicrypt.Module.Cryptography.Interfaces;
 using Kwicrypt.Module.Cryptography.Services;
 #endif
@@ -36,13 +34,7 @@ public class AuthModuleInstaller : IModuleInstaller
 
         services.AddScoped<UserAuthService>();
         
-        services.AddControllers(options =>
-        {
-            options.ModelBinderProviders.Insert(0, new EncryptedModelBinderProvider());
-        });
-        
 #if MODULE_CRYPTO
-        services.AddTransient<EncryptedUserRegisterRequestModelBinder>();
         services.AddTransient<ICryptoService, CryptoService>();
 #endif
         

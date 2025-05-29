@@ -64,16 +64,16 @@ public static class CryptoHelper
         var privateKey = rsa.ToXmlString(true);
         return (privateKey, publicKey);
     }
-    public static byte[] RsaEncrypt(byte[] data, string publicKeyXml)
+    public static byte[] EncryptRsa(byte[] data, string publicRsaKey)
     {
         using var rsa = RSA.Create();
-        rsa.FromXmlString(publicKeyXml);
+        rsa.FromXmlString(publicRsaKey);
         return rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA256);
     }
-    public static byte[] RsaDecrypt(byte[] encryptedData, string privateKeyXml)
+    public static byte[] DecryptRsa(byte[] encryptedData, string privateRsaKey)
     {
         using var rsa = RSA.Create();
-        rsa.FromXmlString(privateKeyXml);
+        rsa.FromXmlString(privateRsaKey);
         return rsa.Decrypt(encryptedData, RSAEncryptionPadding.OaepSHA256);
     }
 }
