@@ -25,7 +25,20 @@ public class BaseController : ControllerBase
 
         var user = await _userRepository.FindUserById(userId);
         if (user == null)
-            return new AuthenticatedUser(null, BadRequest(Errors.MAIL_NOT_FOUND));
+            return new AuthenticatedUser(null, BadRequest());
+
+        return new AuthenticatedUser(user, null);
+    }
+    
+    protected async Task<AuthenticatedUser> GetAuthenticatedUser(string refreshToken)
+    {
+        var userId = _userAuthService.RefreshTokenToUserId(refreshToken);
+        if (userId == Guid.Empty)
+            return new AuthenticatedUser(null, Unauthorized(Errors.REFRESH_TOKEN_EXPIRED));
+
+        var user = await _userRepository.FindUserById(userId);
+        if (user == null)
+            return new AuthenticatedUser(null, BadRequest());
 
         return new AuthenticatedUser(user, null);
     }

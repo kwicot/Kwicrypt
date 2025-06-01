@@ -14,6 +14,8 @@ public static class Errors
     public const string EMAIL_INVALID_FORMAT = "EMAIL_INVALID_FORMAT";
     public const string MAIL_NOT_FOUND = "USERNAME_NOT_FOUND";
 
+    public const string USER_NOT_FOUND = "USER_NOT_FOUND";
+
     public const string USERNAME_EMPTY = "USERNAME_EMPTY";
     public const string USERNAME_TOO_SHORT = "USERNAME_TOO_SHORT";
     public const string USERNAME_INVALID_CHARACTERS = "USERNAME_INVALID_CHARACTERS";

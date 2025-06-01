@@ -60,6 +60,12 @@ public class UserAuthService
         
         return new AuthResult(user, accessToken, refreshToken);
     }
+
+    public async Task UpdatePublicRsa(User user, string publicRsa)
+    {
+        user.SetPublicRSAKey(publicRsa);
+        await _userRepository.UpdateUser(user);
+    }
     public async Task<bool> LogoutAsync(string refreshToken)
     {
         var token = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
@@ -121,6 +127,16 @@ public class UserAuthService
 
         if(userId.HasValue)
             return userId.Value;
+        else
+            return Guid.Empty;
+    }
+    public Guid RefreshTokenToUserId(string refreshToken)
+    {
+        // Проверка валидности Access Token
+        var token = _tokenService.ValidateRefreshTokenAsync(refreshToken);
+
+        if(token.Result != null)
+            return token.Result.UserId;
         else
             return Guid.Empty;
     }
